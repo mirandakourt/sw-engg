@@ -1,13 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php
-    require_once('../../mysql_connect.php');
+    require_once('../mysql_connect.php');
     session_start();
     
-    if(isset($_POST['expand']))
+    $queryCheck = "SELECT * FROM `course` LEFT JOIN faculty ON faculty.f_id = course.c_faculty";
+    $resultCheck=mysqli_query($dbc,$queryCheck);
+    while($rowCheck=mysqli_fetch_array($resultCheck,MYSQLI_ASSOC))
     {
-        $_SESSION['id'] = $_POST['expand'];
-        header('Location: adminEditCourseOfferings.php');
+        $button = $rowCheck['c_id'];
+        if(isset($_POST[$button]))
+        {
+            $time = $_POST['T'.$rowCheck['c_id']];
+            $day = $_POST['D'.$rowCheck['c_id']];
+            $room = $_POST['R'.$rowCheck['c_id']];
+            $prof = $_POST['P'.$rowCheck['c_id']];
+            
+            if($prof != 0)
+            {
+                $query = "UPDATE course SET c_day = '{$day}', c_time = '{$time}', c_room = '{$room}', c_faculty = '{$prof}' WHERE c_id = '{$button}'";
+                $result = mysqli_query($dbc,$query);
+            }
+            
+            else
+            {
+                $query = "UPDATE course SET c_day = '{$day}', c_time = '{$time}', c_room = '{$room}' WHERE c_id = '{$button}'";
+                $result = mysqli_query($dbc,$query);
+            }
+        }
+    }
+    
+    if(isset($_POST['college']))
+    {
+        if($_POST['college'] == 1)
+            $section = 'S%';
+        else if($_POST['college'] == 2)
+            $section = 'E%';
+        else if($_POST['college'] == 3)
+            $section = 'S%';
+        else if($_POST['college'] == 4)
+            $section = 'A%';
+        else if($_POST['college'] == 5)
+            $section = 'K%';
+        else if($_POST['college'] == 6)
+            $section = 'V%';
+        else if($_POST['college'] == 7)
+            $section = 'L%';
+        else if($_POST['college'] == 8)
+            $section = 'X%';
+        else if($_POST['college'] == 0)
+            $section = '0';
     }
     
     if(isset($_POST['search']))
@@ -44,24 +86,29 @@
     <div class="wrapper ">
         <div class="sidebar" data-color="green">
             <div class="logo">
-                <a  class="simple-text logo-mini">
+                <a href="adminDashboard.php" class="simple-text logo-mini">
                     <img src="../assets/img/logo.png" />
                 </a>
-                <a class="simple-text logo-normal">
+                <a href="adminDashboard.php" class="simple-text logo-normal">
                     DE LA SALLE UNIVERSITY 
                 </a>
             </div>
             <div class="sidebar-wrapper">
                 <ul class="nav">
-                    
                     <li>
-                        <a href="adminUserProfile.php">
-                            <i class="now-ui-icons users_circle-08"></i>
-                            <p>Change Password</p>
+                        <a href="adminDashboard.php">
+                            <i class="now-ui-icons education_atom"></i>
+                            <p>Dashboard</p>
                         </a>
                     </li>
                     <li>
-                              <a href="adminViewAccounts.php">
+                        <a href="adminUserProfile.php">
+                            <i class="now-ui-icons users_circle-08"></i>
+                            <p>User Profile</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="adminAccounts.php">
                             <i class="now-ui-icons business_badge"></i>
                             <p>Accounts</p>
                         </a>
@@ -76,12 +123,6 @@
                         <a href="adminAttendanceSummary.php">
                             <i class="now-ui-icons education_paper"></i>
                             <p>Attendance Summary</p>
-                        </a>
-                    </li>
-                     <li>
-                        <a href="logout.php">
-                            <i class="now-ui-icons arrow"></i>
-                            <p>Logout</p>
                         </a>
                     </li>
                 </ul>
@@ -99,76 +140,108 @@
                                 <span class="navbar-toggler-bar bar3"></span>
                             </button>
                         </div>
-                     
+                        <a class="navbar-brand" href="adminCourseOfferings.php"><font color="#141E30">View and Edit Course Offerings</font></a>
                     </div>
-                       <div class="collapse navbar-collapse justify-content-end" id="navigation">
-                        <form class="form-horizontal" method = "post" action = "<?php echo $_SERVER['PHP_SELF']?>">
-                            <div class="input-group no-border">
-                                <input type="text" name = "search" value="" class="form-control" placeholder="Search...">
-                                <span class="input-group-addon">
-                                    <i class="now-ui-icons ui-1_zoom-bold" style="color:#141E30"></i>
-                                </span>
-                            </div>
-                        </form>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-bar navbar-kebab"></span>
                         <span class="navbar-toggler-bar navbar-kebab"></span>
                         <span class="navbar-toggler-bar navbar-kebab"></span>
                     </button>
-                  
+                    <div class="collapse navbar-collapse justify-content-end" id="navigation">
+                          
+                        <ul class="navbar-nav">
+                            <ul class="navbar-nav">
+                               <li class="nav-item dropdown">
+                                <a class="nav-link" href="loginPage.php" id="navbarDropdownMenuLink" aria-haspopup="true" aria-expanded="false">
+                                    Logout
+                                    <i class="now-ui-icons arrows-1_minimal-right" style="color:#141E30"></i>
+                                </a>
+                            </li>
+                        </ul>
+                        </ul>
+                    </div>
                 </div>
             </nav>
             <!-- End Navbar -->
-            <br><br><br><br><br>
+            <br><br><br><br>
             <div class="content">
-<form class="form-horizontal" method = "post" action = "<?php echo $_SERVER['PHP_SELF']?>";
-    
 
-
+                <form class="form-horizontal" method = "post" action = "<?php echo $_SERVER['PHP_SELF']?>">
+                
+                <br> <div>
+                <div class="col-lg-12 col-md-12">
+                <div class="card card-chart">
+                <div class="card-header">
+                <h4 class="card-title">Course Offerings</h4>
+                <br>
+                </div>
+                <div class="card-body">
+                <center>
+                <select class='form-control col-sm-2' name = 'college'>
+                <option value = 0>Choose a college...</option>
+                <option value = 1>College of Computer Studies</option>
+                <option value = 2>Gokongwei College of Engineering</option>
+                <option value = 3>College of Science</option>
+                <option value = 4>College of Liberal Arts</option>
+                <option value = 5>College of Business</option>
+                <option value = 6>School of Economics</option>
+                <option value = 7>College of Education</option>
+                <option value = 8>Science and Technology Complex</option></select><br>
+                <input type="text" name = "search" class="form-control col-sm-2" placeholder="Search by course...">
+                <br>
+                    
       <?php
-		echo '<br> <div>
-                    <div class="col-lg-12 col-md-12">
-                        <div class="card card-chart">
-                            <div class="card-header">
-                                <h4 class="card-title">View Course Offerings</h4>
-                                <br>
-                            </div>
 
-
-                            <div class="card-body">
-                                <center>
-                                    <table class="table table-hover">
-                                      <thead>
-                                          <tr>
-                                              <th> </th>
-                                            <th>Course Code</th>
-                                            <th>Section</th>
-                                            <th>Name</th>
-                                            <th>Day</th>
-                                            <th>Time</th>
-                                            <th>Room</th>
-                                            <th>Instructor</th>
+                                    echo '<table class="table table-hover">
+                                      <thead style="color:#01703D">
+                                          <tr> 
+                                            <th><b>Code</b></th>
+                                            <th><b>Section</b></th>
+                                            <th><b>Name</b></th>
+                                            <th><b>Day</b></th>
+                                            <th><b>Time</b></th>
+                                            <th><b>Room</b></th>
+                                            <th><b>Instructor</b></th>
+                                            <th> </th>
                                           </tr>
                                       </thead>';
-                                        if(isset($course))
+                      
+                                        if(isset($course) && $course != "")
+                                        {
                                             $query="SELECT * FROM `course` LEFT JOIN faculty ON faculty.f_id = course.c_faculty WHERE course.c_code = '{$course}'";
+                                        }
+                      
+                                        elseif(isset($section) && $course != '0')
+                                        {
+                                            $query="SELECT * FROM `course` LEFT JOIN faculty ON faculty.f_id = course.c_faculty WHERE course.c_section LIKE '{$section}'";
+                                        }
                               
                                         else
+                                        {
                                             $query="SELECT * FROM `course` LEFT JOIN faculty ON faculty.f_id = course.c_faculty";
+                                        }
                                             
                                         $result=mysqli_query($dbc,$query);
                                         while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
                                             {  
                                                 echo "<tr class='clickable-row'>
-                                                </td>
-                                                <td><div align = 'center'><button value ='".$row['c_id']."'class='btn btn-default' type = 'submit' name = 'expand'>Edit</button></div></td>
+                                                
                                                 <td >{$row['c_code']}</td>
                                                 <td>{$row['c_section']}</td>
                                                 <td>{$row['c_name']}</td>
-                                                <td>{$row['c_day']}</td>
-                                                <td>{$row['c_time']}</td>
-                                                <td>{$row['c_room']}</td>
-                                                <td>{$row['f_firstname']} {$row['f_lastname']}
+                                                <td><input type='text' class='form-control' id='day' placeholder='".$row['c_day']."' value = '".$row['c_day']."' name = 'D".$row['c_id']."' maxlength = '3' style='width: 150px;' required></td>
+                                                <td><input type='text' class='form-control' id='time' placeholder='".$row['c_time']."' value = '".$row['c_time']."' maxlength = '9' name = 'T".$row['c_id']."' style='width: 150px;' required></td>
+                                                <td><input type='text' class='form-control' id='room' placeholder='".$row['c_room']."' value = '".$row['c_room']."' maxlength = '5' name = 'R".$row['c_id']."' style='width: 150px;' required></td>
+                                                <td><center>{$row['f_firstname']} {$row['f_lastname']}<center><select class='form-control' name = 'P".$row['c_id']."'><option value = 0>Choose...</option>"; 
+                                            
+                                                $queryProf="SELECT * FROM `faculty`";
+                                                $resultProf=mysqli_query($dbc,$queryProf);
+                                                while($rowProf=mysqli_fetch_array($resultProf,MYSQLI_ASSOC))
+                                                {
+                                                    echo "<option value = {$rowProf['f_id']}>{$rowProf['f_firstname']} {$rowProf['f_lastname']}";
+                                                }
+                                            
+                                                echo "</select></td><td><div align = 'center'><button name ='".$row['c_id']."'class='btn btn-default' type = 'submit'>Save</button></div></td>
                                                 </tr>";
                                             }
                                     
@@ -181,6 +254,7 @@
                 </div>
 		";
        ?> 
+                  
              </form>   
             </div>
             <footer class="footer">

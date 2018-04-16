@@ -1,8 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php
-    require_once('../../mysql_connect.php');
+    require_once('../mysql_connect.php');
     session_start();
+    
+    $section = '0';
+    
+    if(isset($_POST['submit']))
+    {
+        if($_POST['college'] == 1)
+            $section = 'CCS';
+        else if($_POST['college'] == 2)
+            $section = 'GCOE';
+        else if($_POST['college'] == 3)
+            $section = 'COS';
+        else if($_POST['college'] == 4)
+            $section = 'CLA';
+        else if($_POST['college'] == 5)
+            $section = 'COB';
+        else if($_POST['college'] == 6)
+            $section = 'SOE';
+        else if($_POST['college'] == 7)
+            $section = 'BAGCED';
+        else if($_POST['college'] == 8)
+            $section = 'STC';
+        
+    }
 ?>
 
 <head>
@@ -28,6 +51,12 @@
     
     <link href="../assets/css/now-ui-dashboard.css?v=1.0.1" rel="stylesheet" />
 </head>
+    
+<script>
+	function myFunction() {
+    window.print();
+	}
+</script>
 
 <body class="">
     <div class="wrapper ">
@@ -42,14 +71,20 @@
             </div>
             <div class="sidebar-wrapper">
                 <ul class="nav">
-                                    <li>
-                        <a href="adminUserProfile.php">
-                            <i class="now-ui-icons users_circle-08"></i>
-                            <p>Change Password</p>
+                    <li>
+                        <a href="adminDashboard.php">
+                            <i class="now-ui-icons education_atom"></i>
+                            <p>Dashboard</p>
                         </a>
                     </li>
                     <li>
-                                 <a href="adminViewAccounts.php">
+                        <a href="adminUserProfile.php">
+                            <i class="now-ui-icons users_circle-08"></i>
+                            <p>User Profile</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="adminAccounts.php">
                             <i class="now-ui-icons business_badge"></i>
                             <p>Accounts</p>
                         </a>
@@ -64,12 +99,6 @@
                         <a href="adminAttendanceSummary.php">
                             <i class="now-ui-icons education_paper"></i>
                             <p>Attendance Summary</p>
-                        </a>
-                    </li>
-                     <li>
-                        <a href="logout.php">
-                            <i class="now-ui-icons arrow"></i>
-                            <p>Logout</p>
                         </a>
                     </li>
                 </ul>
@@ -87,6 +116,7 @@
                                 <span class="navbar-toggler-bar bar3"></span>
                             </button>
                         </div>
+                        <a class="navbar-brand" href="adminAttendanceSummaryFaculty.php"><font color="#141E30">Attendance Summary - Faculty</font></a>
                     </div>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-bar navbar-kebab"></span>
@@ -94,21 +124,44 @@
                         <span class="navbar-toggler-bar navbar-kebab"></span>
                     </button>
                     <div class="collapse navbar-collapse justify-content-end" id="navigation">
-                        <form>
-                                                   </form>
-                     
+                        <ul class="navbar-nav">
+                               <li class="nav-item dropdown">
+                                <a class="nav-link" href="loginPage.php" id="navbarDropdownMenuLink" aria-haspopup="true" aria-expanded="false">
+                                    Logout
+                                    <i class="now-ui-icons arrows-1_minimal-right" style="color:#141E30"></i>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </nav>
             <!-- End Navbar -->
             <br><br><br><br><br>
             <div class="content">
+            
+            <form class="form-horizontal" method = "post" action = "<?php echo $_SERVER['PHP_SELF']?>">
+                
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
+                            <div class="card-header">
+                            <h4 class="card-title col-sm-2">Attendance Summary</h4>
+                            </div>
                             <div class="card-body">
+                                <center>
+                                <select class='form-control col-sm-2' name = 'college'>
+                                <option value = 0>Choose a college...</option>
+                                <option value = 1>College of Computer Studies</option>
+                                <option value = 2>Gokongwei College of Engineering</option>
+                                <option value = 3>College of Science</option>
+                                <option value = 4>College of Liberal Arts</option>
+                                <option value = 5>College of Business</option>
+                                <option value = 6>School of Economics</option>
+                                <option value = 7>College of Education</option>
+                                <option value = 8>Science and Technology Complex</option></select><button type = "submit" name = "submit" class = "btn btn-default">OK</button><br>
+                                    
                                 <div class="table-responsive">
-                                    <table class="table">
+                                    <table class="table table-hover">
                                         <thead style="color:#01703D">
                                             <th>
                                                 <b>Name</b>
@@ -135,80 +188,78 @@
                                                 <b>Seatworks</b>
                                             </th>
                                             <th>
-                                                <b>Vacant Room</b>
-                                            </th>
-                                            <th>
                                                 <b>Unscheduled Courses</b>
                                             </th>
                                         </thead>
                                         <tbody>
                                        <?php
-                                         $query = "SELECT * from course LEFT JOIN faculty ON faculty.f_id = course.c_faculty LEFT JOIN department ON department.d_id = faculty.f_dept LEFT JOIN college ON college.cl_id = department.d_college LEFT JOIN attendance ON attendance.a_course = course.c_id LEFT JOIN attendance_status ON attendance_status.as_id = attendance.a_status";
-                                         $result=mysqli_query($dbc,$query);
-                                         while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
-                                         {  
+    
+                                         if($section != '0')
+                                             $mainQuery = "SELECT * from faculty LEFT JOIN department ON department.d_id = faculty.f_dept LEFT JOIN college ON college.cl_id = department.d_college WHERE college.cl_code = '{$section}'";
+                                         
+                                         else
+                                            $mainQuery = "SELECT * from faculty LEFT JOIN department ON department.d_id = faculty.f_dept LEFT JOIN college ON college.cl_id = department.d_college";
+                  
+                                         $mainResult = mysqli_query($dbc,$mainQuery);
+                                         while($mainRow=mysqli_fetch_array($mainResult,MYSQLI_ASSOC))
+                                         {
+                                             $ab = 0; $la = 0; $ed = 0;
+                                             $sb = 0; $sw= 0; $vr =0;
+                                             $us = 0;
                                              
-                                            $ab = 0; $la = 0; $ed = 0;
-                                            $sb = 0; $sw= 0; $vr =0;
-                                            $us = 0;
-                                             
-                                            if($row['as_id'] == "1")
+                                             $id = $mainRow['f_id'];
+                                             $query = "SELECT * from course LEFT JOIN faculty ON faculty.f_id = course.c_faculty LEFT JOIN department ON department.d_id = faculty.f_dept LEFT JOIN college ON college.cl_id = department.d_college LEFT JOIN attendance ON attendance.a_course = course.c_id LEFT JOIN attendance_status ON attendance_status.as_id = attendance.a_status WHERE faculty.f_id = '{$id}'";
+                                             $result=mysqli_query($dbc,$query);
+                                             while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
+                                             {  
+
+                                                
+
+                                                if($row['as_id'] == "1")
                                                 $ab++;
-                                             
-                                            if($row['as_id'] == "2")
-                                                $la++; 
-                                             
-                                            if($row['as_id'] == "3")
-                                                $ed++;
-                                             
-                                            if($row['as_id'] == "4")
-                                                $sb++;
-                                             
-                                            if($row['as_id'] == "5")
-                                                $sw++;
-                                             
-                                            if($row['as_id'] == "6")
-                                                $vr++;
-                                             
-                                            if($row['as_id'] == "7")
-                                                $us++;
-                                             
-                                            $next = intval($row['c_id']) + 1;
-                                            $query1 = "SELECT * from course LEFT JOIN faculty ON faculty.f_id = course.c_faculty LEFT JOIN department ON department.d_id = faculty.f_dept LEFT JOIN college ON college.cl_id = department.d_college LEFT JOIN attendance ON attendance.a_course = course.c_id LEFT JOIN attendance_status ON attendance_status.as_id = attendance.a_status WHERE c_id = {$next}";
-                                            $result1=mysqli_query($dbc,$query1);
-                                            $row1=mysqli_fetch_array($result1,MYSQLI_ASSOC);
-                                            if($row1 ['f_id'] == $row['f_id'])
-                                            {
-                                                
+
+                                                if($row['as_id'] == "2")
+                                                    $la++; 
+
+                                                if($row['as_id'] == "3")
+                                                    $ed++;
+
+                                                if($row['as_id'] == "4")
+                                                    $sb++;
+
+                                                if($row['as_id'] == "5")
+                                                    $sw++;
+
+
+                                                if($row['as_id'] == "7")
+                                                    $us++;
+                                                    
                                             }
-                                            else
-                                            {
-                                                echo "<tr class='clickable-row'>
-                                                <td >{$row['f_firstname']} {$row['f_lastname']}</td>
-                                                <td>{$row['cl_code']}</td>
-                                                <td>{$row['d_name']}</td>";
-                                                echo "<td>{$ab}</td>
-                                                <td>{$la}</td>
-                                                <td>{$ed}</td>
-                                                <td>{$sb}</td>
-                                                
-                                                <td>{$sw}</td>
-                                                
-                                                <td>{$vr}</td>
-                                                
-                                                <td>{$us}</td>
-                                                </tr>";
-                                            }
-                                         }
+                                             echo "<tr class='clickable-row'>
+                                                    <td >{$mainRow['f_firstname']} {$mainRow['f_lastname']}</td>
+                                                    <td>{$mainRow['cl_code']}</td>
+                                                    <td>{$mainRow['d_name']}</td>";
+                                                    echo "<td>{$ab}</td>
+                                                    <td>{$la}</td>
+                                                    <td>{$ed}</td>
+                                                    <td>{$sb}</td>
+                                                    <td>{$sw}</td>
+                                                    <td>{$us}</td>
+                                                    </tr>";
+                                             }
+                                         
                                             
                                         ?>
                                         </tbody>
                                     </table>
                                 </div>
+                                </center>
+                                <button  onclick="myFunction()" class="btn btn-default" value="Print" style="height:32px;width:78px;float: right">Print</button><br>
                             </div>
                         </div>
                     </div>
                 </div>
+                </form>
             </div>
             <footer class="footer">
                 <div class="container-fluid">
@@ -225,6 +276,7 @@
         </div>
     </div>
 </body>
+
 <!--   Core JS Files   -->
 <script src="../assets/js/core/jquery.min.js"></script>
 <script src="../assets/js/core/popper.min.js"></script>

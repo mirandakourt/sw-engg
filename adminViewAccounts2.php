@@ -1,11 +1,11 @@
 <?php
-require_once(__DIR__.'/connect.php');
+require_once('../../mysql_connect.php');
 
 		if(isset($_GET['rowID'])){
 				$Status="";
 				$rowID=$_GET['rowID'];
 				$query="SELECT u_status FROM sw_engg.user where u_id='$rowID';";
-				$result=mysqli_query($con,$query);
+				$result=mysqli_query($dbc,$query);
 			while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
 				$Status=$row["u_status"];
 			}
@@ -13,8 +13,8 @@ require_once(__DIR__.'/connect.php');
 				$query="UPDATE user 
 						SET u_status='Deactivated'
 						where u_id='$rowID';";
-				$result=mysqli_query($con,$query);
-				header('location: adminViewAccounts.php');
+				$result=mysqli_query($dbc,$query);
+				header('location: adminViewAccounts2.php');
 				
 			}
 			else
@@ -22,8 +22,8 @@ require_once(__DIR__.'/connect.php');
 				$query="UPDATE user 
 						SET u_status='Activated'
 						where u_id='$rowID';";
-				$result=mysqli_query($con,$query);
-				header('location: adminViewAccounts.php');
+				$result=mysqli_query($dbc,$query);
+				header('location: adminViewAccounts2.php');
 			}
 		}
 ?>
@@ -164,22 +164,21 @@ require_once(__DIR__.'/connect.php');
                                             </th>
                                         </thead>
                                         <tbody>
-<?php
+                                            <?php
 		    $query="SELECT u_id,u_firstname,u_lastname,u_status,user.u_type,usertype.ut_id, usertype.ut_name
 					FROM user
 					INNER JOIN usertype
 					ON usertype.ut_id=user.u_type
-					where usertype.ut_id =2
 					ORDER BY user.u_id;";
-			$result=mysqli_query($con,$query);
-			$rowID=2;
+			$result=mysqli_query($dbc,$query);
+			$rowID=1;
 				foreach($result as $user){
 					echo '<tr>';
 					echo '<td>';
 					echo $user['u_id'];
 					echo '</td>';
 					echo '<td>';
-					echo $user['u_firstname'].' '.$user['u_lastname'];
+					echo $user['u_lastname'].','.$user['u_firstname'];
 					echo '</td>';
 					echo '<td>';
 					echo $user['ut_name'];
@@ -188,10 +187,10 @@ require_once(__DIR__.'/connect.php');
 					echo $user['u_status'];
 					echo '</td>';
 					echo '<td>';
-					echo "<a href='adminViewAccounts.php?rowID=".$rowID."'><button value = ".$rowID." onclick = 'reactivateAccount()' name='activate'
+					echo "<a href='adminViewAccounts2.php?rowID=".$rowID."'><button value = ".$rowID." onclick = 'reactivateAccount()' name='activate'
 					".(($user['u_status']=='Activated')? "disabled":"").">
 						Activate</button></a>";
-					echo "<a href='adminViewAccounts.php?rowID=".$rowID."'><button value = ".$rowID." onclick = 'deactivateAccount()' name='deactivate'"
+					echo "<a href='adminViewAccounts2.php?rowID=".$rowID."'><button value = ".$rowID." onclick = 'deactivateAccount()' name='deactivate'"
 						.(($user['u_status']=='Deactivated')? "disabled":"").">
 						Deactivate</button></a>";
 					echo '</td>';
