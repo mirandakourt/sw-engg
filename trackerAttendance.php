@@ -41,7 +41,7 @@
                     <li>
                         <a href="trackerUserProfile.php">
                             <i class="now-ui-icons users_circle-08"></i>
-                            <p>User Profile</p>
+                            <p>Change Password</p>
                         </a>
                     </li>
                     <li class="active">
@@ -54,6 +54,12 @@
                         <a href="trackerAttendanceHistory.php">
                             <i class="now-ui-icons education_atom"></i>
                             <p>Attendance History</p>
+                        </a>
+                    </li>
+                     <li>
+                        <a href="logout.php">
+                            <i class="now-ui-icons arrow"></i>
+                            <p>Logout</p>
                         </a>
                     </li>
                 </ul>
@@ -71,9 +77,7 @@
                                 <span class="navbar-toggler-bar bar3"></span>
                             </button>
                         </div>
-                        <a class="navbar-brand" href="trackerAttendance.php">
-                            <font color="#141E30">Track Attendance</font>
-                        </a>
+                     
                     </div>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-bar navbar-kebab"></span>
