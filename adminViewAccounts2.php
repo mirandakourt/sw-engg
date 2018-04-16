@@ -59,29 +59,24 @@ require_once('../../mysql_connect.php');
     <div class="wrapper ">
         <div class="sidebar" data-color="green">
             <div class="logo">
-                <a href="adminDashboard.php" class="simple-text logo-mini">
+                <a class="simple-text logo-mini">
                     <img src="../assets/img/logo.png" />
                 </a>
-                <a href="adminDashboard.php" class="simple-text logo-normal">
+                <a class="simple-text logo-normal">
                     DE LA SALLE UNIVERSITY 
                 </a>
             </div>
             <div class="sidebar-wrapper">
-                <ul class="nav">
-                    <li>
-                        <a href="adminDashboard.php">
-                            <i class="now-ui-icons education_atom"></i>
-                            <p>Dashboard</p>
-                        </a>
-                    </li>
+              <ul class="nav">
+                   
                     <li>
                         <a href="adminUserProfile.php">
                             <i class="now-ui-icons users_circle-08"></i>
-                            <p>User Profile</p>
+                            <p>Change Password</p>
                         </a>
                     </li>
                     <li class="active">
-                        <a href="adminAccounts.php">
+                                <a href="adminViewAccounts2.php">
                             <i class="now-ui-icons business_badge"></i>
                             <p>Accounts</p>
                         </a>
@@ -98,7 +93,14 @@ require_once('../../mysql_connect.php');
                             <p>Attendance Summary</p>
                         </a>
                     </li>
+                     <li>
+                        <a href="logout.php">
+                            <i class="now-ui-icons arrow"></i>
+                            <p>Logout</p>
+                        </a>
+                    </li>
                 </ul>
+                <
             </div>
         </div>
         <div class="main-panel">
@@ -113,31 +115,14 @@ require_once('../../mysql_connect.php');
                                 <span class="navbar-toggler-bar bar3"></span>
                             </button>
                         </div>
-                        <a class="navbar-brand" href="adminActivatedAccounts.php"><font color="#141E30">Accounts - View Accounts</font></a>
+                        <a class="navbar-brand"><font color="#141E30">Accounts</font></a>
                     </div>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-bar navbar-kebab"></span>
                         <span class="navbar-toggler-bar navbar-kebab"></span>
                         <span class="navbar-toggler-bar navbar-kebab"></span>
                     </button>
-                    <div class="collapse navbar-collapse justify-content-end" id="navigation">
-                        <form>
-                            <div class="input-group no-border">
-                                <input type="text" value="" class="form-control" placeholder="Search...">
-                                <span class="input-group-addon">
-                                    <i class="now-ui-icons ui-1_zoom-bold" style="color:#141E30"></i>
-                                </span>
-                            </div>
-                        </form>
-                        <ul class="navbar-nav">
-                            <li class="nav-item dropdown">
-                                <a class="nav-link" href="loginPage.php" id="navbarDropdownMenuLink" aria-haspopup="true" aria-expanded="false">
-                                    Logout
-                                    <i class="now-ui-icons arrows-1_minimal-right" style="color:#141E30"></i>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                    
                 </div>
             </nav>
             <!-- End Navbar -->
@@ -150,38 +135,31 @@ require_once('../../mysql_connect.php');
                                 <div class="table-responsive">
                                     <table class="table">
                                         <thead style="color:#01703D">
+                                           
                                             <th>
-                                                <b>ID Number</b>
+                                                <b>Username</b>
                                             </th>
-                                            <th>
-                                                <b>Name</b>
-                                            </th>
-                                            <th>
-                                                <b>Account Type</b>
-                                            </th>
+                                         
                                             <th>
                                                 <b>Status</b>
+                                            </th>
+                                             <th>
+                                                <b>Manage</b>
                                             </th>
                                         </thead>
                                         <tbody>
                                             <?php
-		    $query="SELECT u_id,u_firstname,u_lastname,u_status,user.u_type,usertype.ut_id, usertype.ut_name
+		    $query="SELECT u_id,u_username, u_status
 					FROM user
-					INNER JOIN usertype
-					ON usertype.ut_id=user.u_type
-					ORDER BY user.u_id;";
+					ORDER BY u_username;";
 			$result=mysqli_query($dbc,$query);
 			$rowID=1;
 				foreach($result as $user){
 					echo '<tr>';
+				
+				
 					echo '<td>';
-					echo $user['u_id'];
-					echo '</td>';
-					echo '<td>';
-					echo $user['u_lastname'].','.$user['u_firstname'];
-					echo '</td>';
-					echo '<td>';
-					echo $user['ut_name'];
+					echo $user['u_username'];
 					echo '</td>';
 					echo '<td>';
 					echo $user['u_status'];
@@ -204,7 +182,10 @@ require_once('../../mysql_connect.php');
                                     </table>
                                 </div>
                                 
-                                <a href="adminAccounts.php" style="color:#FFF"><button type="button" class="btn btn-default" style="float:left">BACK TO ACCOUNTS</button></a>
+                                 <div class="row">
+                                        &nbsp;&nbsp;&nbsp;&nbsp;
+                                        <a href= "adminCreateAccount.php"> <button type="button" class="btn btn-warning" style="align: right;background-color:#2d8911">ADD ACCOUNT </button></a>
+                                    </div>
                             </div>
                         </div>
                     </div>

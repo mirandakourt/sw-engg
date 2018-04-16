@@ -43,7 +43,7 @@
                     <li>
                         <a href="trackerUserProfile.php">
                             <i class="now-ui-icons users_circle-08"></i>
-                            <p>User Profile</p>
+                            <p>Change Password</p>
                         </a>
                     </li>
                     <li>

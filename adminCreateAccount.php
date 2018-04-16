@@ -37,21 +37,20 @@
                 </a>
             </div>
             <div class="sidebar-wrapper">
-                <ul class="nav">
-                   
-                    <li>
+                  <ul class="nav">
+                     <li>
                         <a href="adminUserProfile.php">
                             <i class="now-ui-icons users_circle-08"></i>
-                            <p>User Profile</p>
+                            <p>Change Password</p>
                         </a>
                     </li>
                     <li class="active">
-                        <a href="adminViewAccounts.php">
+                                <a href="adminViewAccounts2.php">
                             <i class="now-ui-icons business_badge"></i>
                             <p>Accounts</p>
                         </a>
                     </li>
-                    <li>
+                    <li >
                         <a href="adminCourseOfferings.php">
                             <i class="now-ui-icons design_bullet-list-67"></i>
                             <p>Course Offerings</p>
@@ -91,7 +90,16 @@
                         <span class="navbar-toggler-bar navbar-kebab"></span>
                         <span class="navbar-toggler-bar navbar-kebab"></span>
                     </button>
-                 
+                    <div class="collapse navbar-collapse justify-content-end" id="navigation">
+                        <ul class="navbar-nav">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link" href="loginPage.php" id="navbarDropdownMenuLink" aria-haspopup="true" aria-expanded="false">
+                                    Logout
+                                    <i class="now-ui-icons arrows-1_minimal-right" style="color:#141E30"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </nav>
             <!-- End Navbar -->
@@ -101,33 +109,23 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                <h5 class="title">Create Account</h5>
+                                <h5 class="title">Create Tracker Account</h5>
                             </div>
                             <div class="card-body">
-                                <form>
-                                    
-
+                                <form action="../sys/accountcreate.php" method="post">
                                     <div class="row">
                                         <div class="col-md-4 pr-1">
                                             <div class="form-group">
-                                                <label>Account Type</label>
-                                               <select>
-                                                  <option value="volvo">ADMIN</option>
-                                                  <option value="saab">TRACKER</option>
-                                                </select>
-                                               <br>
                                                 <label>Username</label>
-                                                <input type="text" class="form-control" placeholder="Username" value="">
-                                            
-                                       
+                                                <input type="text" class="form-control" placeholder="Username" name="u_username" value="" required>
                                                 <label>Password</label>
-                                                <input type="password" class="form-control" placeholder="Password" value="">
+                                                <input type="password" class="form-control" placeholder="Password" name="u_password" value="" required>
                                             </div>
                                         </div>
                                     </div>
                                     
-                                      
-                                        <button type="button" class="btn btn-warning" style="float:left;background-color:#2d8911">CREATE ACCOUNT</button>
+                                        <a href="adminViewAccounts2.php"> <button type="button" class="btn btn-default" style="float:left" onclick="cancel();">CANCEL</button></a>
+                                        <input id="submitme" class="btn btn-warning" type="submit" style="float:left;background-color:#2d8911" value="ADD ACCOUNT" onclick="return createAccount();"/>
                                 </form>
                             </div>
                         </div>
@@ -163,5 +161,22 @@
 <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="../assets/js/now-ui-dashboard.js?v=1.0.1"></script>
 
-
+<script>
+function createAccount() {
+    var txt;
+    if (confirm("Are you sure you wish to create this account?")) {
+        window.location.href = "../sys/accountcreate.php";
+    }
+    else {
+        return false;	
+    }
+}
+function cancel() {
+    var txt;
+    if (confirm("Are you sure you want to discard creating this acccount?")) {
+        window.location.href = "adminCreateAccount.php";
+    }
+}
+</script>
+    
 </html>

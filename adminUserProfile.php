@@ -29,10 +29,10 @@
     <div class="wrapper ">
         <div class="sidebar" data-color="green">
             <div class="logo">
-                <a href="adminDashboard.php" class="simple-text logo-mini">
+                <a class="simple-text logo-mini">
                     <img src="../assets/img/logo.png" />
                 </a>
-                <a href="adminDashboard.php" class="simple-text logo-normal">
+                <a class="simple-text logo-normal">
                     DE LA SALLE UNIVERSITY 
                 </a>
             </div>
@@ -46,7 +46,7 @@
                         </a>
                     </li>
                     <li>
-                                <a href="adminViewAccounts.php">
+                                <a href="adminViewAccounts2.php">
                             <i class="now-ui-icons business_badge"></i>
                             <p>Accounts</p>
                         </a>
@@ -84,7 +84,7 @@
                                 <span class="navbar-toggler-bar bar3"></span>
                             </button>
                         </div>
-                        <a class="navbar-brand" href="adminUserProfile.php"><font color="#141E30">User Profile</font></a>
+                        <a class="navbar-brand"><font color="#141E30">Change Password</font></a>
                     </div>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-bar navbar-kebab"></span>
@@ -105,34 +105,56 @@
                        
                         <div class="card">
                             <div class="card-header">
-                                <h5 class="title">About Me</h5>
                             </div>
                             <div class="card-body">
                                 
                                   
-                                    <div class="row">
-                                        <div class="col-md-6 pr-1">
-                                            <div class="form-group">
-                                                <label><b>Username</b></label>
-                                                emily_prentiss
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 pr-1">
-                                            <div class="form-group">
-                                                <label><b>Password</b></label>
-                                                *************
-                                                <br>
-                                            </div>
-                                        </div>
-                                           <div class="col-md-6 pr-1">
-                                            <div class="form-group">
-                                               <div class="row">
-                                        &nbsp;&nbsp;&nbsp;&nbsp;
-                                        <button type="button" class="btn btn-warning" style="align: right;background-color:#2d8911">EDIT</button>
-                                    </div>
-                                           </div>
-                                        </div>
-                                    </div>
+                                   <?php
+$connect = mysqli_connect('localhost','root', null,'sw-engg');
+
+if (!$connect) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+/*
+if(isset($_SESSION['password']) && isset($_SESSION['username'])) {
+	$oldPass=($_POST['oldPass']); 
+	$Password=($_POST['password']);
+	$passCheck=($_POST['passCheck']);
+	
+	if($_SESSION['password']==$oldPass)
+	{
+		$temp = $_SESSION['username'];
+		if($Password==$passCheck){
+			$query="UPDATE user 
+					SET user.u_password='$Password'
+					where u_username='$temp';"; //Change Query here for session
+			$result=mysqli_query($connect,$query);
+				echo "<script>";
+				echo "alert('You changed your password!')";
+				echo "</script>";
+			unset($_POST['oldPass']);
+			
+			
+			$_SESSION['password'] = $Password;
+		}
+		else
+		{
+			echo "<br>";
+			echo "Passwords do not match!";
+			unset($_POST['oldPass']);
+		}
+	}
+    */
+?>
+
+<form action ="Chanepass3.php" method = "POST" >
+  Old Password:<input type="password" placeholder = "<?php echo $_SESSION['password']; ?>" name="oldPass" placeholder="Old Password" required><br>
+  <br>
+  New Password:<input type="password" name="password" placeholder="New Password" required><br>
+    <BR>
+  Confirm New Password:<input type="password" name="passCheck" placeholder="Confirm" required><br>
+        <br>
+  <br><input type="submit" name="submission" id = "submitInput" value="Submit" >
                                 
                             </div>
                         </div>
