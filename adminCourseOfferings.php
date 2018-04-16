@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php
-    require_once('../mysql_connect.php');
+    require_once('../../mysql_connect.php');
     session_start();
+    
+    $message = NULL;
     
     $queryCheck = "SELECT * FROM `course` LEFT JOIN faculty ON faculty.f_id = course.c_faculty";
     $resultCheck=mysqli_query($dbc,$queryCheck);
@@ -11,18 +13,34 @@
         $button = $rowCheck['c_id'];
         if(isset($_POST[$button]))
         {
+            $test = true;
             $time = $_POST['T'.$rowCheck['c_id']];
             $day = $_POST['D'.$rowCheck['c_id']];
             $room = $_POST['R'.$rowCheck['c_id']];
             $prof = $_POST['P'.$rowCheck['c_id']];
             
-            if($prof != 0)
+            $checkDay = substr($day, 0, 1);
+            $checkRoom = substr($room, 0, 1);
+            
+            if(!($checkDay == "M" || $checkDay == "T" || $checkDay == "W" || $checkDay == "H" || $checkDay == "F" || $checkDay == "S"))
+            {
+                $test = false;
+                $message.='<p>Invalid day input!</p>';
+            }
+            
+            if(!($checkRoom == "G" || $checkRoom == "V" || $checkRoom == "M" || $checkRoom == "S" || $checkRoom == "L" || $checkRoom == "A"))
+            {
+                $test = false;
+                $message.='<p>Invalid room input!</p>';
+            }
+            
+            if($prof != 0 && $test)
             {
                 $query = "UPDATE course SET c_day = '{$day}', c_time = '{$time}', c_room = '{$room}', c_faculty = '{$prof}' WHERE c_id = '{$button}'";
                 $result = mysqli_query($dbc,$query);
             }
             
-            else
+            elseif ($test)
             {
                 $query = "UPDATE course SET c_day = '{$day}', c_time = '{$time}', c_room = '{$room}' WHERE c_id = '{$button}'";
                 $result = mysqli_query($dbc,$query);
@@ -86,29 +104,23 @@
     <div class="wrapper ">
         <div class="sidebar" data-color="green">
             <div class="logo">
-                <a href="adminDashboard.php" class="simple-text logo-mini">
+                <a class="simple-text logo-mini">
                     <img src="../assets/img/logo.png" />
                 </a>
-                <a href="adminDashboard.php" class="simple-text logo-normal">
+                <a class="simple-text logo-normal">
                     DE LA SALLE UNIVERSITY 
                 </a>
             </div>
             <div class="sidebar-wrapper">
                 <ul class="nav">
-                    <li>
-                        <a href="adminDashboard.php">
-                            <i class="now-ui-icons education_atom"></i>
-                            <p>Dashboard</p>
-                        </a>
-                    </li>
-                    <li>
+                     <li>
                         <a href="adminUserProfile.php">
                             <i class="now-ui-icons users_circle-08"></i>
-                            <p>User Profile</p>
+                            <p>Change Password</p>
                         </a>
                     </li>
                     <li>
-                        <a href="adminAccounts.php">
+                                <a href="adminViewAccounts2.php">
                             <i class="now-ui-icons business_badge"></i>
                             <p>Accounts</p>
                         </a>
@@ -123,6 +135,12 @@
                         <a href="adminAttendanceSummary.php">
                             <i class="now-ui-icons education_paper"></i>
                             <p>Attendance Summary</p>
+                        </a>
+                    </li>
+                     <li>
+                        <a href="logout.php">
+                            <i class="now-ui-icons arrow"></i>
+                            <p>Logout</p>
                         </a>
                     </li>
                 </ul>
@@ -140,26 +158,14 @@
                                 <span class="navbar-toggler-bar bar3"></span>
                             </button>
                         </div>
-                        <a class="navbar-brand" href="adminCourseOfferings.php"><font color="#141E30">View and Edit Course Offerings</font></a>
+                        <a class="navbar-brand"><font color="#141E30">Course Offerings</font></a>
                     </div>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-bar navbar-kebab"></span>
                         <span class="navbar-toggler-bar navbar-kebab"></span>
                         <span class="navbar-toggler-bar navbar-kebab"></span>
                     </button>
-                    <div class="collapse navbar-collapse justify-content-end" id="navigation">
-                          
-                        <ul class="navbar-nav">
-                            <ul class="navbar-nav">
-                               <li class="nav-item dropdown">
-                                <a class="nav-link" href="loginPage.php" id="navbarDropdownMenuLink" aria-haspopup="true" aria-expanded="false">
-                                    Logout
-                                    <i class="now-ui-icons arrows-1_minimal-right" style="color:#141E30"></i>
-                                </a>
-                            </li>
-                        </ul>
-                        </ul>
-                    </div>
+                   
                 </div>
             </nav>
             <!-- End Navbar -->
@@ -172,7 +178,6 @@
                 <div class="col-lg-12 col-md-12">
                 <div class="card card-chart">
                 <div class="card-header">
-                <h4 class="card-title">Course Offerings</h4>
                 <br>
                 </div>
                 <div class="card-body">
@@ -190,7 +195,13 @@
                 <input type="text" name = "search" class="form-control col-sm-2" placeholder="Search by course...">
                 <br>
                     
+                    
       <?php
+                        
+                        if(isset($message))
+                        {
+                           echo '<font color="red">'.$message.'</font></center>';
+                        }
 
                                     echo '<table class="table table-hover">
                                       <thead style="color:#01703D">
@@ -211,7 +222,7 @@
                                             $query="SELECT * FROM `course` LEFT JOIN faculty ON faculty.f_id = course.c_faculty WHERE course.c_code = '{$course}'";
                                         }
                       
-                                        elseif(isset($section) && $course != '0')
+                                        elseif(isset($section) && $section != '0')
                                         {
                                             $query="SELECT * FROM `course` LEFT JOIN faculty ON faculty.f_id = course.c_faculty WHERE course.c_section LIKE '{$section}'";
                                         }
@@ -239,7 +250,7 @@
                                                 while($rowProf=mysqli_fetch_array($resultProf,MYSQLI_ASSOC))
                                                 {
                                                     echo "<option value = {$rowProf['f_id']}>{$rowProf['f_firstname']} {$rowProf['f_lastname']}";
-                                                }
+                                                } 
                                             
                                                 echo "</select></td><td><div align = 'center'><button name ='".$row['c_id']."'class='btn btn-default' type = 'submit'>Save</button></div></td>
                                                 </tr>";

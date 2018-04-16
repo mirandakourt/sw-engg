@@ -41,7 +41,7 @@
                     <li>
                         <a href="trackerUserProfile.php">
                             <i class="now-ui-icons users_circle-08"></i>
-                            <p>Change Password</p>
+                            <p>User Profile</p>
                         </a>
                     </li>
                     <li class="active">
@@ -54,12 +54,6 @@
                         <a href="trackerAttendanceHistory.php">
                             <i class="now-ui-icons education_atom"></i>
                             <p>Attendance History</p>
-                        </a>
-                    </li>
-                     <li>
-                        <a href="logout.php">
-                            <i class="now-ui-icons arrow"></i>
-                            <p>Logout</p>
                         </a>
                     </li>
                 </ul>
@@ -77,7 +71,9 @@
                                 <span class="navbar-toggler-bar bar3"></span>
                             </button>
                         </div>
-                     
+                        <a class="navbar-brand" href="trackerAttendance.php">
+                            <font color="#141E30">Track Attendance</font>
+                        </a>
                     </div>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-bar navbar-kebab"></span>
@@ -88,25 +84,66 @@
                         <form>
 
                         </form>
-                    
+                        <ul class="navbar-nav">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="now-ui-icons ui-1_settings-gear-63" style="color:#141E30"></i>
+                                    <p>
+                                        <span class="d-lg-none d-md-block">Some Actions</span>
+                                    </p>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+
+                                    <a class="dropdown-item" href="loginPage.php" style="color:#141E30">Logout</a>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </nav>
             <!-- End Navbar -->
             <br><br><br><br><br>
             <div class="content">
-
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-
-                                <center>
-
-                                    <h5 class="card-category">Today is</h5>
-                                    <h4 class="card-title">
-
-                                        <!-- START OF DATE SCRIPT-->
+                                <!-- <p>
+                                    <b>LEGEND:</b>
+                                    &nbsp;
+                                    ABS  = absent
+                                    &nbsp;&nbsp;
+                                    | 
+                                    &nbsp;&nbsp;
+                                    LATE = late
+                                    &nbsp;&nbsp;
+                                    | 
+                                    &nbsp;&nbsp;
+                                    ED   = early dismissal
+									 &nbsp;&nbsp;
+                                    | 
+                                    &nbsp;&nbsp;
+									SUB = substitute
+									 &nbsp;&nbsp;
+                                    | 
+                                    &nbsp;&nbsp;
+									SW=seatwork
+									 &nbsp;&nbsp;
+                                    | 
+                                    &nbsp;&nbsp;
+									VR = Vacant Room
+									 &nbsp;&nbsp;
+                                    | 
+                                    &nbsp;&nbsp;
+									US= Unscheduled Class
+                                </p> -->
+                            </div>
+                            <div class="card-body">
+                                <div id="wrapper">
+                                    <h2 class="module">DLSU Attendance</h2>
+                                    
+                                </div>
+                                <!-- START OF DATE SCRIPT-->
 
                                         <script type="text/javascript">
                                             var tday = new Array("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
@@ -149,133 +186,120 @@
                                         <div id="clockbox"></div>
 
                                         <!-- END OF DATE SCRIPT-->
+                                <table class="table">
+                                    <thead style="color:#01703D">
+                                        <th>
+                                            <b>Faculty Name</b>
+                                        </th>
+                                        <th>
+                                            <b>Course</b>
+                                        </th>
+                                        <th>
+                                            <b>Section</b>
+                                        </th>
+                                        <th>
+                                            <b>Time</b>
+                                        </th>
+                                        <th>
+                                            <b>Venue</b>
+                                        </th>
+                                        <th>
+                                            <b>Status</b>
+                                        </th>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        
+                                        $connect = mysqli_connect('localhost','root','','sw-engg');
 
-                                    </h4>
-                            </div>
+                                        if (!$connect) 
+                                        {
+                                            die("Connection failed: " . mysqli_connect_error());
+                                        }
+                                            $day=date("l"); 
+                                              // require_once("../sys/connect.php");
+                                               /*$data1 ="SELECT f_id, f_firstname, f_lastname,c_code, c_time, c_room,c_faculty FROM faculty,course WHERE f_id=c_faculty";*/
+                                               $data1 ="SELECT f_id, f_firstname, f_lastname,c_id,c_code, c_time, c_day, 
+                                                c_room,c_section, as_code,a_id, a_section, a_status, a_date, a_remarks, as_name
+                                                FROM faculty ,course,attendance,attendance_status
+                                                WHERE f_id=c_faculty AND a_course=c_id AND a_status=as_code AND c_day ='TH'
+                                                GROUP BY c_id";
+                                        
+                                            $data2 ="SELECT f_id, f_firstname, f_lastname,c_id,c_code, c_time, c_day, 
+                                                c_room,c_section, as_code,a_id, a_section, a_status, a_date, a_remarks, as_name
+                                                FROM faculty ,course,attendance,attendance_status
+                                                WHERE f_id=c_faculty AND a_course=c_id AND a_status=as_code AND c_day ='WF'
+                                                GROUP BY c_id ";
+                                            if ($day == "Tuesday" OR $day == "Thursday"){
+                                               $query1 = mysqli_query($connect,$data1);
+                                               if(mysqli_num_rows($query1)>0){
+                                                   while($row = mysqli_fetch_array($query1)){
+                                                       echo
+                                                       "<tr>".
+                                                       "<td>".$row["f_firstname"]." ".$row["f_lastname"]."</td>".
+                                                       "<td>".$row["c_code"]."</td>".
+                                                       "<td>".$row["c_section"]."</td>".
+                                                       "<td>".$row["c_time"]."&ensp;".$row["c_day"]."</td>".
+                                                       "<td>".$row["c_room"]."</td>".
 
-                            <div class="card-footer">
-                                <div class="stats">
-                                    <!--<i class="now-ui-icons location_compass-05"></i>Current local time-->
-                                </div>
+                                                        '<form action="../sys/insertAttendance.php?id='.$row["c_id"].'&a_course='.$row["c_code"].'&a_section='.$row["c_section"].'&a_remarks='.$row["a_remarks"].'" method="post">
+                                                        <td>
+                                                        <div id="showChoices">
+                                                        <select name="a_status">
+                                                            <option name="a_status" value="'.$row["a_status"].'" selected="'.$row["a_status"].'">'.$row["as_name"].'</option>
+                                                            <option name="a_status" value="AB"> Absent</option>
+                                                            <option name="a_status" value="LA"> Late</option>
+                                                            <option name="a_status" value="ED"> Early Dismissal</option>
+                                                            <option name="a_status" value="SB"> Substitute</option>
+                                                            <option name="a_status" value="SW"> Seatwork</option>
+                                                            <option name="a_status" value="US"> Unscheduled Class</option>
+                                                        </select>
+                                                        </div></td>'.
+                                                       '<td><input type="text" name="a_remarks" /></td>'.
+                                                       '<td><input type="submit" id="'.$row["c_id"].' name="activate" class="btn btn-primary btn-fill"  style="background-color:green" value="SUBMIT"/></td></form>'
+                                                       ."</tr>";
+                                                   }
+                                            
+                                               }
+                                            } else if ($day == "Wednesday" OR $day == "Friday" OR $day == "Monday") {
+                                                $query2 = mysqli_query($connect,$data2);
+                                               if(mysqli_num_rows($query2)>0){
+                                                   while($row = mysqli_fetch_array($query2)){
+                                                       echo
+                                                       "<tr>".
+                                                       "<td>".$row["f_firstname"]." ".$row["f_lastname"]."</td>".
+                                                       "<td>".$row["c_code"]."</td>".
+                                                       "<td>".$row["c_section"]."</td>".
+                                                       "<td>".$row["c_time"]."&ensp;".$row["c_day"]."</td>".
+                                                       "<td>".$row["c_room"]."</td>".
 
-                                </center>
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table">
-
-                                        <tbody>
-                                            <?php 
-
-
-$connect = mysqli_connect('localhost','root','','sw-engg');
-
-if (!$connect) 
-{
-    die("Connection failed: " . mysqli_connect_error());
-}
-    
-    
-        
-        //echo "<script type='text/javascript'>alert('You have accidentaly inputed a wrong value please try again')</script>";
-        // Displays table after search button is touched but not filled
-        //$sql = "SELECT trackingNumber,requestingPartyID,title,type,startingDate,duration FROM documents WHERE store_safe='1'";
-        $sql = "SELECT c_day, f_firstname, f_lastname,c_code, c_time, c_section, c_room,c_faculty FROM faculty ,course WHERE f_id=c_faculty";
-        
-
-
-        $result = mysqli_query($connect,$sql);
-        
-        
-        if ( mysqli_num_rows($result) > 0) {    
-            echo 
-            '<table width="80%" border="1" align="center" cellpadding="0" cellspacing="0" bordercolor="#000000">
-                <tr>
-              
-                <th width="10%" border = "1"><div align ="center"><b>Faculty Name</div></b></td>
-                <th width="10%" border = "1"><div align ="center"><b>Course</div></b></td>
-                <th width="10%" border = "1"><div align ="center"><b>Section</div></b></td>
-                <th width="10%" border = "1"><div align ="center"><b>Time</div></b></td>
-                <th width="10%" border = "1"><div align ="center"><b>Venue</div></b></td>
-                <th width="10%" border = "1"><div align ="center"><b>Attendance Status</div></b></td>
-             
-                <th width="10%" border = "1"><div align ="center"><b>Submit</div></b></td>
-                </tr>';
-        
-            //outputs data 
-            $ctr = 0;
-            while ($row = $result ->fetch_assoc()) {
-                echo "<tr>
-                        <td align='center'>".$row["f_firstname"].$row["f_lastname"]."</td>
-                        <td align='center'>".$row["c_code"]."</td>
-                        <td align='center'>".$row["c_section"]."</td>
-                        <td align='center'>".$row["c_time"]."</td>
-                        <td align='center'>".$row["c_room"]."</td>
-                        <td align='center'>".
-                            "<select name='attendancestat'>
-                              <option value='AB'>ABSENT</option>
-                              <option value='LA'>LATE</option>
-                              <option value='ED'>EARLY DISMISSAL</option>
-                              <option value='SB'>SUBSTITUTE</option>
-                              <option value='SW'>SEATWORK</option>
-                              <option value='US'>UNSCHEDULED CLASS</option>
-                            </select>"."</td>
-                        <td align='center'>"."<form action='trackerAttendance.php' method='post'><input type='submit' name='Submit' value='Submit'></form>";
-            }
-            echo "</table>";
-            
-      if (isset($_POST['Submit'])) {
-                $ast=$_POST['attendancestat'];
-                if (!empty($ast)){
-                    echo $ast;
-                } else echo "Attendance Stat is <b>empty</b> <br>";
-
-                /**/
-                $msql=mysqli_query($connect,"SELECT as_id AS aid FROM attendance_status WHERE as_code='{$ast}'");
-                if($msql)
-                {
-                    while($row=mysqli_fetch_array($msql))
-                    {
-                        $attendancestat=$row['aid'];
-                    }
-                   $sql2 = mysqli_query($connect,"SELECT f_firstname, f_lastname,c_code, c_time, c_room,c_faculty, c_id, c_section FROM faculty ,course WHERE f_id=c_faculty");
-                    if($sql2)
-                    {
-                        while($row=mysqli_fetch_array($sql2))
-                        {
-                            
-                            $cid=$row['c_code'];
-                            $csection=$row['c_section'];
-                            $fname=$row['f_firstname'];
-                            $lname=$row['f_lastname'];
-                        }
-                        echo "Course Code: $cid <br>"; 
-                        echo "Section: $csection <br>"; 
-                        echo "Faculty Name: $fname $lname <br>";
-                        $sql3= mysqli_query($connect,"INSERT INTO attendance(a_course, a_section, a_status,a_fname, a_lname) VALUES
-                        ('{$cid}', '{$csection}', '{$ast}', '{$fname}','{$lname}' )");
-                        if ($sql3) 
-                        {
-                            echo "New record created successfully";
-                        } 
-                        else 
-                        {
-                            echo "Couldn't insert records"; 
-                        } // end if sql3
-                    } //end if sql2
-                    else
-                            echo "Couldn't select records";
-                }// end if mysql   
-            }// end isset submit   
-        }//
-?>
-                                        </tbody>
-                                    </table>
-                                </div>
+                                                        '<form action="../sys/insertAttendance.php?id='.$row["c_id"].'&a_course='.$row["c_code"].'&a_section='.$row["c_section"].'&a_remarks='.$row["a_remarks"].'" method="post">
+                                                        <td>
+                                                        <div id="showChoices">
+                                                        <select name="a_status">
+                                                    <option name="a_status" value="'.$row["a_status"].'" selected="'.$row["a_status"].'">'.$row["as_name"].'</option>
+                                                    <option name="a_status" value="AB"> Absent</option>
+                                                    <option name="a_status" value="LA"> Late</option>
+                                                    <option name="a_status" value="ED"> Early Dismissal</option>
+                                                    <option name="a_status" value="SB"> Substitute</option>
+                                                    <option name="a_status" value="SW"> Seatwork</option>
+                                                    <option name="a_status" value="US"> Unscheduled Class</option>
+                                                </select>
+                                                        </div></td>'.
+                                                       '<td><input type="submit" id="'.$row["c_id"].' name="activate" class="btn btn-primary btn-fill"  style="background-color:green" value="SUBMIT" onclick="updateTracker();"/></td></form>'
+                                                       ."</tr>";
+                                                   }
+                                            
+                                               }
+                                            }
+                                        
+                                        
+                                           ?>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
             <footer class="footer">
@@ -293,10 +317,7 @@ if (!$connect)
             </footer>
         </div>
     </div>
-
 </body>
-
-
 <!--   Core JS Files   -->
 <script src="../assets/js/core/jquery.min.js"></script>
 <script src="../assets/js/core/popper.min.js"></script>
@@ -311,5 +332,16 @@ if (!$connect)
 <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="../assets/js/now-ui-dashboard.js?v=1.0.1"></script>
 
-
+<script>
+    function updateTracker() {
+        var prompt = confirm("Are you sure you wish to proceed?");
+        if (prompt==true) {
+            return alert("Track Attendance has been submitted!");
+            
+        } 
+        else {
+            return false;	
+        }
+    }
+</script>
 </html>

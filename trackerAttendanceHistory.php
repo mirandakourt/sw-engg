@@ -43,7 +43,7 @@
                     <li>
                         <a href="trackerUserProfile.php">
                             <i class="now-ui-icons users_circle-08"></i>
-                            <p>Change Password</p>
+                            <p>User Profile</p>
                         </a>
                     </li>
                     <li>
@@ -63,8 +63,7 @@
                             <i class="now-ui-icons arrow"></i>
                             <p>Logout</p>
                         </a>
-                    </li>
-                </ul>
+                    </li>                </ul>
             </div>
         </div>
         <div class="main-panel">
@@ -79,9 +78,20 @@
                                 <span class="navbar-toggler-bar bar3"></span>
                             </button>
                         </div>
-                    
+                        <a class="navbar-brand" href="trackerAttendance.php">
+                            <font color="#141E30">Attendance History Report</font>
+                        </a>
                     </div>
-                  
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-bar navbar-kebab"></span>
+                        <span class="navbar-toggler-bar navbar-kebab"></span>
+                        <span class="navbar-toggler-bar navbar-kebab"></span>
+                    </button>
+                    <div class="collapse navbar-collapse justify-content-end" id="navigation">
+                        <form>
+
+                        </form>
+                     </div>
                 </div>
             </nav>
             <!-- End Navbar -->
@@ -99,7 +109,7 @@
 
                                     <!--<select name="selectDate" onchange="onSelectChange();">
                                     <?php 
-                                        require_once("../sys/connect.php");
+                                        require_once("../../mysql_connect.php");
                                         $query="SELECT a_date FROM attendance GROUP BY a_date ORDER BY a_date DESC";
                                         $datequety = mysqli_query($con,$query);
                                             if(mysqli_num_rows($datequety)>0){
@@ -111,10 +121,13 @@
                                                             echo "Error";
                                                         }
                                         $date=$_POST['selectDate'];
-                                        ?>
+                                    ?>
                                 </select>-->
-                                    <div class="col-sm-2">
-                                        <input width = '20' type="date" name="selectDate" onchange="onSelectChange();" class="form-control" />
+                                    <div class="input-group no-border">
+                                        <input type="date" name="selectDate" onchange="onSelectChange();" value="<?php echo $date?>" class="form-control" />
+                                        <span class="input-group-addon">
+                                            <i class="now-ui-icons ui-1_calendar-60" style="color:#141E30"></i>
+                                        </span>
                                     </div>
 
                                 </form>
@@ -123,91 +136,92 @@
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <?php
-                                       require_once("../sys/connect.php");
+                                       require_once("../../mysql_connect.php");
                                        if (isset($_POST['selectDate'])) 
                                         { 
                                          $date=$_POST['selectDate'];
-                                        
-                                 
+                                        } 
+
+                                       $data1 ="SELECT f_id, f_firstname, f_lastname,c_id,c_code, c_section, c_time, c_day, c_room,as_code,a_id,a_status, a_date, a_remarks, DAYNAME(a_date) as day, as_name, as_id, as_code
+                                        FROM faculty ,course,attendance,attendance_status
+                                        WHERE f_id=c_faculty AND a_course=c_id AND a_statusID=as_id
+                                        AND a_date='$date'";
+                                       $query1 = mysqli_query($dbc,$data1);
+                                       if(mysqli_num_rows($query1)>0){
                                            echo '<table class="table">
                                                     <thead style="color:#01703D">
                                                         <th>
-                                                            <b>Attendance History </b>
+                                                            <b>Attendance History Report</b>
                                                         </th>
+                                                        <th style="float:right"><b>'.date("F j, Y", strtotime($date)).'</b></th>
                                                     </thead>
                                                     <tbody>
-                                                     <tr>
-                                                            <td><b>
-                                                                Date: '.$date.'</b>
-                                                            </td>
-                                                            </tr>
-                                                     </tbody>
+                                                    <tr><td></td><td></td></tr>
+                                                    </tbody>
                                                 </table>';
                                            echo '<table class="table">
                                             <thead style="color:#01703D">
                                                 <th>
-                                                    <b>Faculty</b>
-                                                </th>
-                                                <th>
-                                                    <b>Course</b>
-                                                </th>
-                                                <th>
-                                                    <b>Time</b>
-                                                </th>
-                                                <th>
-                                                    <b>Room</b>
-                                                </th>
-                                                <th>
-                                                    <b>Status</b>
-                                                </th>
-                                                <th>
-                                                    <b>Remarks</b>
-                                                </th>
+                                            <b>Faculty Name</b>
+                                        </th>
+                                        <th>
+                                            <b>Course</b>
+                                        </th>
+                                        <th>
+                                            <b>Section</b>
+                                        </th>
+                                        <th>
+                                            <b>Time</b>
+                                        </th>
+                                        <th>
+                                            <b>Venue</b>
+                                        </th>
+                                        <th>
+                                            <b>Status</b>
+                                        </th>
+                                        <th>
+                                            <b>Remarks</b>
+                                        </th>
                                                 <th>
                                                     <b>Action</b>
                                                 </th>
                                             </thead>
                                             <tbody>';
-                                       }
-
-                                       $data1 ="SELECT f_id, f_firstname, f_lastname,c_id,c_code, c_time, c_room,as_code,a_id,a_status,as_name, a_date, a_remarks
-                                        FROM faculty ,course,attendance,attendance_status
-                                        WHERE f_id=c_faculty AND a_course=c_id AND a_status=as_id
-                                        AND a_date='{$date}'";
-                                       $query1 = mysqli_query($con,$data1);
-                                       if(mysqli_num_rows($query1)>0){
-                                          
                                            while($row = mysqli_fetch_array($query1)){
                                                echo
                                                "<tr>".
                                                "<td>".$row["f_firstname"]." ".$row["f_lastname"]."</td>".
                                                "<td>".$row["c_code"]."</td>".
-                                               "<td>".$row["c_time"]."</td>".
+                                               "<td>".$row["c_section"]."</td>".
+                                               "<td>".$row["c_day"]."</td>".
                                                "<td>".$row["c_room"]."</td>".
                                                /*'<form action="../sys/updateTrackerHistory.php?id='.$row["c_id"].'&a_remarks='.$row["a_remarks"].'" method="post"><td><input type="text" value="'.$row["a_status"].'" name="a_status" /></td>'.*/
                                                    
                                                 '<form action="../sys/updateTrackerHistory.php?id='.$row["c_id"].'&a_remarks='.$row["a_remarks"].'" method="post">
-                                                <td>'.$row["as_name"].'
+                                                <td>
                                                 <div id="showChoices">
                                                 <select name="a_status">
-                                                    <option name="a_status" disabled selected>Select status</option>
-                                                    <option name="a_status" value="1"> Absent</option>
-                                                    <option name="a_status" value="2"> Late</option>
-                                                    <option name="a_status" value="3"> Early Dismissal</option>
-                                                    <option name="a_status" value="4"> Substitute</option>
-                                                    <option name="a_status" value="5"> Seatwork</option>
-                                                  
-                                                    <option name="a_status" value="6"> Unscheduled Class</option>
+                                                    <option name="a_status" selected="'.$row["a_status"].'">'.$row["a_status"].'</option>
+                                                    <option name="a_status" value="AB">AB</option>
+                                                    <option name="a_status" value="LA">LA</option>
+                                                    <option name="a_status" value="ED">ED</option>
+                                                    <option name="a_status" value="SB">SB</option>
+                                                    <option name="a_status" value="SW">SW</option>
+                                                    <option name="a_status" value="US">US</option>
                                                 </select>
                                                 </div></td>'.
-                                               /*<input type="button" value="EDIT" class="btn btn-primary btn-fill makeEditable" onclick="showDiv();"/>&nbsp;*/
-                                               '<td><br><input type="text" value="'.$row["a_remarks"].'" name="a_remarks" /></td>'.
-                                               '<td><input type="submit" id="'.$row["c_id"].' name="activate" class="btn btn-primary btn-fill"  style="background-color:green" value="UPDATE"/></td></form>'
+                                               '<td><input type="text" value="'.$row["a_remarks"].'" name="a_remarks"/></td>'.
+                                               '<td><input type="submit" id="'.$row["c_id"].' name="activate" class="btn btn-primary btn-fill"  style="background-color:green" value="UPDATE" onclick="updateHistory()"/></td></form>'
                                                ."</tr>";
                                                
                                            }
                                            echo '</tbody></table>';
+                                           
                                        }
+                                           /*else  {
+                                               echo "No records found.";
+                                           }*/
+                                               
                                    ?>
 
                                 </div>
@@ -216,41 +230,43 @@
                     </div>
                 </div>
             </div>
-         
+            <footer class="footer">
+                <div class="container-fluid">
+                    <div class="copyright">
+                        &copy;
+                        <script>
+                            document.write(new Date().getFullYear())
+
+                        </script>, Designed by
+                        <a href="https://www.invisionapp.com" target="_blank" style="color:#01703D">Invision</a>. Coded by
+                        <a href="https://www.creative-tim.com" target="_blank" style="color:#01703D">Creative Tim</a>.
+                    </div>
+                </div>
+            </footer>
         </div>
     </div>
 </body>
 
 <script>
-    /*function showAlert() {
-                                        alert("Fields are now editable!");
-                                    }
-
-                                    function showDiv() {
-                                        var x = document.getElementById("showChoices");
-                                        if (x.style.display === "none") {
-                                            x.style.display = "block";
-                                        } else {
-                                            x.style.display = "none";
-                                        }
-                                    }*/
-
-    //make fields editable
-    $(function() {
-        $(".makeEditable").click(function() {
-            $('input:text').removeAttr("readonly");
-        });
-
-        $(".makeNonEditable").click(function() {
-            $('input:text').attr("readonly", "readonly");
-        });
-    });
-
     //submit select tag (for date change)
     function onSelectChange() {
         document.getElementById('selectForm').submit();
     }
 
+</script>
+    
+<script>
+function updateHistory() {
+    var txt;
+    var alert = confirm("Are you sure you wish to proceed?");
+    if (alert==true) {
+        txt = "Attendance History Report has been updated!";
+    } 
+    else {
+        document.getElementById('selectForm').submit();
+    }
+    //document.getElementById("demo").innerHTML = txt;
+}
 </script>
 
 <!--   Core JS Files   -->

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php
-    require_once('../mysql_connect.php');
+    require_once('../../mysql_connect.php');
     session_start();
     
     $section = '0';
