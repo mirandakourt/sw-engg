@@ -86,7 +86,7 @@ if(isset($_POST['search']))
                                 <span class="navbar-toggler-bar bar3"></span>
                             </button>
                         </div>
-                        <a class="navbar-brand" href="trackerAttendance.php">
+                        <a class="navbar-brand">
                             <font color="#141E30">Track Attendance</font>
                         </a>
                     </div>
@@ -135,8 +135,6 @@ if(isset($_POST['search']))
 
                                 <div id="wrapper">
 
-                                    <h2 class="module">DLSU Attendance</h2>
-                                    
                                 </div>
 
                                 <!-- START OF DATE SCRIPT-->
@@ -186,7 +184,8 @@ if(isset($_POST['search']))
 
                                    <form class="form-horizontal" method = "post" action = "<?php echo $_SERVER['PHP_SELF']?>"> <input type="text" name = "search" class="form-control col-sm-2" placeholder="Search by course..."> 
                     &nbsp;<button type = "submit" name = "submitCourse" class = "btn btn-info">OK</button></div>
-                    <br></form>
+                    <br>
+                </form>
                                     <thead style="color:#01703D">
                                         <th>
                                             <b>Faculty Name</b>
@@ -198,7 +197,7 @@ if(isset($_POST['search']))
                                             <b>Section</b>
                                         </th>
                                         <th>
-                                            <b>Time</b>
+                                            <b>Time / Day</b>
                                         </th>
                                         <th>
                                             <b>Venue</b>

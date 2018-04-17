@@ -28,6 +28,12 @@
     }
 ?>
 
+ <script>
+	function myFunction() {
+    window.print();
+	}
+	</script>
+
 <head>
     <meta charset="utf-8" />
     
@@ -51,12 +57,6 @@
     
     <link href="../assets/css/now-ui-dashboard.css?v=1.0.1" rel="stylesheet" />
 </head>
-    
-<script>
-	function myFunction() {
-    window.print();
-	}
-</script>
 
 <body class="">
     <div class="wrapper ">
@@ -70,26 +70,21 @@
                 </a>
             </div>
             <div class="sidebar-wrapper">
-                <ul class="nav">
-                    <li>
-                        <a href="adminDashboard.php">
-                            <i class="now-ui-icons education_atom"></i>
-                            <p>Dashboard</p>
-                        </a>
-                    </li>
+               <ul class="nav">
+                   
                     <li>
                         <a href="adminUserProfile.php">
                             <i class="now-ui-icons users_circle-08"></i>
-                            <p>User Profile</p>
+                            <p>Change Password</p>
                         </a>
                     </li>
                     <li>
-                        <a href="adminAccounts.php">
+                                <a href="adminViewAccounts2.php">
                             <i class="now-ui-icons business_badge"></i>
                             <p>Accounts</p>
                         </a>
                     </li>
-                    <li>
+                    <li >
                         <a href="adminCourseOfferings.php">
                             <i class="now-ui-icons design_bullet-list-67"></i>
                             <p>Course Offerings</p>
@@ -99,6 +94,12 @@
                         <a href="adminAttendanceSummary.php">
                             <i class="now-ui-icons education_paper"></i>
                             <p>Attendance Summary</p>
+                        </a>
+                    </li>
+                     <li>
+                        <a href="logout.php">
+                            <i class="now-ui-icons arrow"></i>
+                            <p>Logout</p>
                         </a>
                     </li>
                 </ul>
@@ -116,23 +117,14 @@
                                 <span class="navbar-toggler-bar bar3"></span>
                             </button>
                         </div>
-                        <a class="navbar-brand" href="adminAttendanceSummaryFaculty.php"><font color="#141E30">Attendance Summary - Faculty</font></a>
+                        <a class="navbar-brand"><font color="#141E30">Attendance Summary</font></a>
                     </div>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-bar navbar-kebab"></span>
                         <span class="navbar-toggler-bar navbar-kebab"></span>
                         <span class="navbar-toggler-bar navbar-kebab"></span>
                     </button>
-                    <div class="collapse navbar-collapse justify-content-end" id="navigation">
-                        <ul class="navbar-nav">
-                               <li class="nav-item dropdown">
-                                <a class="nav-link" href="loginPage.php" id="navbarDropdownMenuLink" aria-haspopup="true" aria-expanded="false">
-                                    Logout
-                                    <i class="now-ui-icons arrows-1_minimal-right" style="color:#141E30"></i>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                    
                 </div>
             </nav>
             <!-- End Navbar -->
@@ -144,11 +136,11 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
-                            <div class="card-header">
-                            <h4 class="card-title col-sm-2">Attendance Summary</h4>
-                            </div>
                             <div class="card-body">
                                 <center>
+                                <div class = "form-inline" align = "right">
+        
+                                    
                                 <select class='form-control col-sm-2' name = 'college'>
                                 <option value = 0>Choose a college...</option>
                                 <option value = 1>College of Computer Studies</option>
@@ -158,8 +150,8 @@
                                 <option value = 5>College of Business</option>
                                 <option value = 6>School of Economics</option>
                                 <option value = 7>College of Education</option>
-                                <option value = 8>Science and Technology Complex</option></select><button type = "submit" name = "submit" class = "btn btn-default">OK</button><br>
-                                    
+                                <option value = 8>Science and Technology Complex</option></select>&nbsp;<button type = "submit" name = "submit" class = "btn btn-info">OK</button><br>
+                                </div>    
                                 <div class="table-responsive">
                                     <table class="table table-hover">
                                         <thead style="color:#01703D">
@@ -208,30 +200,30 @@
                                              $us = 0;
                                              
                                              $id = $mainRow['f_id'];
-                                             $query = "SELECT * from course LEFT JOIN faculty ON faculty.f_id = course.c_faculty LEFT JOIN department ON department.d_id = faculty.f_dept LEFT JOIN college ON college.cl_id = department.d_college LEFT JOIN attendance ON attendance.a_course = course.c_id LEFT JOIN attendance_status ON attendance_status.as_id = attendance.a_status WHERE faculty.f_id = '{$id}'";
+                                             $query = "SELECT * from course LEFT JOIN faculty ON faculty.f_id = course.c_faculty LEFT JOIN department ON department.d_id = faculty.f_dept LEFT JOIN college ON college.cl_id = department.d_college LEFT JOIN attendance ON attendance.a_course = course.c_id WHERE faculty.f_id = '{$id}'";
                                              $result=mysqli_query($dbc,$query);
                                              while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
                                              {  
 
                                                 
 
-                                                if($row['as_id'] == "1")
+                                                if($row['a_status'] == "AB")
                                                 $ab++;
 
-                                                if($row['as_id'] == "2")
+                                                if($row['a_status'] == "LA")
                                                     $la++; 
 
-                                                if($row['as_id'] == "3")
+                                                if($row['a_status'] == "ED")
                                                     $ed++;
 
-                                                if($row['as_id'] == "4")
+                                                if($row['a_status'] == "SB")
                                                     $sb++;
 
-                                                if($row['as_id'] == "5")
+                                                if($row['a_status'] == "SW")
                                                     $sw++;
 
 
-                                                if($row['as_id'] == "7")
+                                                if($row['a_status'] == "US")
                                                     $us++;
                                                     
                                             }
@@ -254,7 +246,7 @@
                                     </table>
                                 </div>
                                 </center>
-                                <button  onclick="myFunction()" class="btn btn-default" value="Print" style="height:32px;width:78px;float: right">Print</button><br>
+                                <button  onclick="myFunction()" class="btn btn-danger" value="Print" style="height:32px;width:78px;float: right">Print</button><br>
                             </div>
                         </div>
                     </div>
@@ -276,7 +268,6 @@
         </div>
     </div>
 </body>
-
 <!--   Core JS Files   -->
 <script src="../assets/js/core/jquery.min.js"></script>
 <script src="../assets/js/core/popper.min.js"></script>

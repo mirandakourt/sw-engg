@@ -74,6 +74,17 @@
     {
         $course = $_POST['search'];
     }
+    
+    if(isset($_POST['add']))
+    {
+        header('Location: adminAddCourse.php');
+    }
+
+
+    if(isset($_POST['fac']))
+    {
+        header('Location: addFaculty.php');
+    }
 ?> 
 
 <head>
@@ -112,8 +123,9 @@
                 </a>
             </div>
             <div class="sidebar-wrapper">
-                <ul class="nav">
-                     <li>
+             <ul class="nav">
+                   
+                    <li>
                         <a href="adminUserProfile.php">
                             <i class="now-ui-icons users_circle-08"></i>
                             <p>Change Password</p>
@@ -131,7 +143,7 @@
                             <p>Course Offerings</p>
                         </a>
                     </li>
-                    <li>
+                    <li >
                         <a href="adminAttendanceSummary.php">
                             <i class="now-ui-icons education_paper"></i>
                             <p>Attendance Summary</p>
@@ -165,7 +177,7 @@
                         <span class="navbar-toggler-bar navbar-kebab"></span>
                         <span class="navbar-toggler-bar navbar-kebab"></span>
                     </button>
-                   
+               
                 </div>
             </nav>
             <!-- End Navbar -->
@@ -177,11 +189,11 @@
                 <br> <div>
                 <div class="col-lg-12 col-md-12">
                 <div class="card card-chart">
-                <div class="card-header">
-                <br>
-                </div>
                 <div class="card-body">
+                    
+                   
                 <center>
+                <div class = "form-inline" align = "center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <select class='form-control col-sm-2' name = 'college'>
                 <option value = 0>Choose a college...</option>
                 <option value = 1>College of Computer Studies</option>
@@ -191,10 +203,13 @@
                 <option value = 5>College of Business</option>
                 <option value = 6>School of Economics</option>
                 <option value = 7>College of Education</option>
-                <option value = 8>Science and Technology Complex</option></select><br>
+                <option value = 8>Science and Technology Complex</option></select>&nbsp;
+                <button type = "submit" name = "submitCollege" class = "btn btn-info">OK</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                <!--</div><div class = "form-inline" align = "center">-->
                 <input type="text" name = "search" class="form-control col-sm-2" placeholder="Search by course...">
-                <br>
                     
+                    &nbsp;<button type = "submit" name = "submitCourse" class = "btn btn-info">OK</button></div>
+                    <br>
                     
       <?php
                         
@@ -242,15 +257,15 @@
                                                 <td>{$row['c_name']}</td>
                                                 <td><input type='text' class='form-control' id='day' placeholder='".$row['c_day']."' value = '".$row['c_day']."' name = 'D".$row['c_id']."' maxlength = '3' style='width: 150px;' required></td>
                                                 <td><input type='text' class='form-control' id='time' placeholder='".$row['c_time']."' value = '".$row['c_time']."' maxlength = '9' name = 'T".$row['c_id']."' style='width: 150px;' required></td>
-                                                <td><input type='text' class='form-control' id='room' placeholder='".$row['c_room']."' value = '".$row['c_room']."' maxlength = '5' name = 'R".$row['c_id']."' style='width: 150px;' required></td>
+                                                <td><input type='text' class='form-control' id='room' placeholder='".$row['c_room']."' value = '".$row['c_room']."' minlength = '4' maxlength = '5' name = 'R".$row['c_id']."' style='width: 150px;' required></td>
                                                 <td><center>{$row['f_firstname']} {$row['f_lastname']}<center><select class='form-control' name = 'P".$row['c_id']."'><option value = 0>Choose...</option>"; 
                                             
                                                 $queryProf="SELECT * FROM `faculty`";
                                                 $resultProf=mysqli_query($dbc,$queryProf);
                                                 while($rowProf=mysqli_fetch_array($resultProf,MYSQLI_ASSOC))
                                                 {
-                                                    echo "<option value = {$rowProf['f_id']}>{$rowProf['f_firstname']} {$rowProf['f_lastname']}";
-                                                } 
+                                                    echo "<option value = {$rowProf['f_id']}>{$rowProf['f_firstname']} {$rowProf['f_lastname']}</option>";
+                                                }
                                             
                                                 echo "</select></td><td><div align = 'center'><button name ='".$row['c_id']."'class='btn btn-default' type = 'submit'>Save</button></div></td>
                                                 </tr>";
@@ -262,9 +277,13 @@
                             </div>
                         </div>
                     </div>
-                </div>
-		";
+                    ";
        ?> 
+                    &nbsp;&nbsp;&nbsp;&nbsp;<button class='btn btn-warning' name = "add">Add Course</button>
+
+                    &nbsp;&nbsp;&nbsp;&nbsp;<button class='btn btn-warning' name = "fac">Add Faculty</button><br>
+                </div>
+		
                   
              </form>   
             </div>

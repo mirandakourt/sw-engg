@@ -1,11 +1,17 @@
 <?php
-require_once('../../mysql_connect.php');
+$connect = mysqli_connect('localhost','root','','sw-engg');
+
+                                        if (!$connect) 
+                                        {
+                                            die("Connection failed: " . mysqli_connect_error());
+                                        }
+//require_once('../../mysql_connect.php');
 
 		if(isset($_GET['rowID'])){
 				$Status="";
 				$rowID=$_GET['rowID'];
-				$query="SELECT u_status FROM sw_engg.user where u_id='$rowID';";
-				$result=mysqli_query($dbc,$query);
+				$query="SELECT u_status FROM user where u_id='$rowID';";
+				$result=mysqli_query($connect,$query);
 			while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
 				$Status=$row["u_status"];
 			}
@@ -13,7 +19,7 @@ require_once('../../mysql_connect.php');
 				$query="UPDATE user 
 						SET u_status='Deactivated'
 						where u_id='$rowID';";
-				$result=mysqli_query($dbc,$query);
+				$result=mysqli_query($connect,$query);
 				header('location: adminViewAccounts2.php');
 				
 			}
@@ -22,7 +28,7 @@ require_once('../../mysql_connect.php');
 				$query="UPDATE user 
 						SET u_status='Activated'
 						where u_id='$rowID';";
-				$result=mysqli_query($dbc,$query);
+				$result=mysqli_query($connect,$query);
 				header('location: adminViewAccounts2.php');
 			}
 		}
@@ -151,8 +157,8 @@ require_once('../../mysql_connect.php');
                                             <?php
 		    $query="SELECT u_id,u_username, u_status
 					FROM user
-					ORDER BY u_username;";
-			$result=mysqli_query($dbc,$query);
+					;";
+			$result=mysqli_query($connect,$query);
 			$rowID=1;
 				foreach($result as $user){
 					echo '<tr>';
@@ -225,7 +231,9 @@ function reactivateAccount() {
     var txt;
     if (confirm("Are you sure you wish to proceed?")) {
         txt = "Account has been reactivated!";
-    } 
+    }else {
+        header('Location:'.'../sys/adminViewAccounts2.php');
+    }
     document.getElementById("demo").innerHTML = txt;
 }
 </script>
@@ -235,6 +243,8 @@ function deactivateAccount() {
     var txt;
     if (confirm("Are you sure you wish to proceed?")) {
         txt = "Account has been deactivated!";
+    }else {
+        header('Location:'.'../sys/adminViewAccounts2.php');
     } 
     document.getElementById("demo").innerHTML = txt;
 }

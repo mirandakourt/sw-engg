@@ -78,42 +78,74 @@
                                 <span class="navbar-toggler-bar bar3"></span>
                             </button>
                         </div>
-                        
+                          <a class="navbar-brand">
+                            <font color="#141E30">Change Password</font>
+                        </a>
                     </div>
                    
                 </div>
             </nav>
             <!-- End Navbar -->
-            
+           
+                 
             <br><br><br><br><br>
             <div class="content">
                 <div class="row">
-                   
+                    
                     <div class="col-md-8">
                        
                         <div class="card">
                             <div class="card-header">
-                                <h5 class="title">My Profile </h5>
                             </div>
                             <div class="card-body">
                                 
-                                    <div class="row">
-                                       
-                                        <div class="col-md-6 pr-1">
-                                            <div class="form-group">
-                                                <label><b>Username</b></label>
-                                                elizabeth_olson
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 pr-1">
-                                            <div class="form-group">
-                                                <label><b>Password</b></label>
-                                                *************
-                                                <br>
-                                            </div>
-                                        </div>
-                                          
-                                    </div>
+                                  
+                                   <?php
+$connect = mysqli_connect('localhost','root', null,'sw-engg');
+
+if (!$connect) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+/*
+if(isset($_SESSION['password']) && isset($_SESSION['username'])) {
+    $oldPass=($_POST['oldPass']); 
+    $Password=($_POST['password']);
+    $passCheck=($_POST['passCheck']);
+    
+    if($_SESSION['password']==$oldPass)
+    {
+        $temp = $_SESSION['username'];
+        if($Password==$passCheck){
+            $query="UPDATE user 
+                    SET user.u_password='$Password'
+                    where u_username='$temp';"; //Change Query here for session
+            $result=mysqli_query($connect,$query);
+                echo "<script>";
+                echo "alert('You changed your password!')";
+                echo "</script>";
+            unset($_POST['oldPass']);
+            
+            
+            $_SESSION['password'] = $Password;
+        }
+        else
+        {
+            echo "<br>";
+            echo "Passwords do not match!";
+            unset($_POST['oldPass']);
+        }
+    }
+    */
+?>
+
+<form action ="Chanepass3.php" method = "POST" >
+  Old Password:<input type="password" placeholder = "<?php echo $_SESSION['password']; ?>" name="oldPass" placeholder="Old Password" required><br>
+  <br>
+  New Password:<input type="password" name="password" placeholder="New Password" required><br>
+    <BR>
+  Confirm New Password:<input type="password" name="passCheck" placeholder="Confirm" required><br>
+        <br>
+  <br><input type="submit" name="submission" id = "submitInput" value="Submit" >
                                 
                             </div>
                         </div>

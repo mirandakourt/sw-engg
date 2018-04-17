@@ -37,20 +37,21 @@
                 </a>
             </div>
             <div class="sidebar-wrapper">
-                  <ul class="nav">
-                     <li>
+                <ul class="nav">
+                   
+                    <li>
                         <a href="adminUserProfile.php">
                             <i class="now-ui-icons users_circle-08"></i>
-                            <p>Change Password</p>
+                            <p>Change Password </p>
                         </a>
                     </li>
                     <li class="active">
-                                <a href="adminViewAccounts2.php">
+                        <a href="adminViewAccounts2.php">
                             <i class="now-ui-icons business_badge"></i>
                             <p>Accounts</p>
                         </a>
                     </li>
-                    <li >
+                    <li>
                         <a href="adminCourseOfferings.php">
                             <i class="now-ui-icons design_bullet-list-67"></i>
                             <p>Course Offerings</p>
@@ -62,7 +63,7 @@
                             <p>Attendance Summary</p>
                         </a>
                     </li>
-                     <li>
+                       <li>
                         <a href="logout.php">
                             <i class="now-ui-icons arrow"></i>
                             <p>Logout</p>
@@ -83,23 +84,14 @@
                                 <span class="navbar-toggler-bar bar3"></span>
                             </button>
                         </div>
-                       
+                        <a class="navbar-brand"><font color="#141E30">Create Account</font></a>
                     </div>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-bar navbar-kebab"></span>
                         <span class="navbar-toggler-bar navbar-kebab"></span>
                         <span class="navbar-toggler-bar navbar-kebab"></span>
                     </button>
-                    <div class="collapse navbar-collapse justify-content-end" id="navigation">
-                        <ul class="navbar-nav">
-                            <li class="nav-item dropdown">
-                                <a class="nav-link" href="loginPage.php" id="navbarDropdownMenuLink" aria-haspopup="true" aria-expanded="false">
-                                    Logout
-                                    <i class="now-ui-icons arrows-1_minimal-right" style="color:#141E30"></i>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                  
                 </div>
             </nav>
             <!-- End Navbar -->
@@ -117,15 +109,15 @@
                                         <div class="col-md-4 pr-1">
                                             <div class="form-group">
                                                 <label>Username</label>
-                                                <input type="text" class="form-control" placeholder="Username" name="u_username" value="" required>
+                                                <input type="text" class="form-control" placeholder="Username" name="u_username" id="user" value="">
                                                 <label>Password</label>
-                                                <input type="password" class="form-control" placeholder="Password" name="u_password" value="" required>
+                                                <input type="password" class="form-control" placeholder="Password" name="u_password" id="psw" value="" required>
                                             </div>
                                         </div>
                                     </div>
                                     
-                                        <a href="adminViewAccounts2.php"> <button type="button" class="btn btn-default" style="float:left" onclick="cancel();">CANCEL</button></a>
-                                        <input id="submitme" class="btn btn-warning" type="submit" style="float:left;background-color:#2d8911" value="ADD ACCOUNT" onclick="return createAccount();"/>
+                                        <button type="button" class="btn btn-default" style="float:left" onclick="cancel();">CANCEL</button>
+                                        <input id="submitme" class="btn btn-warning" type="submit" style="float:right;background-color:#2d8911" value="ADD ACCOUNT" onclick="return trial();"/>
                                 </form>
                             </div>
                         </div>
@@ -176,6 +168,21 @@ function cancel() {
     if (confirm("Are you sure you want to discard creating this acccount?")) {
         window.location.href = "adminCreateAccount.php";
     }
+}
+    
+function trial(){
+	
+	user = document.getElementById("user").value;
+    psw = document.getElementById("psw").value;
+	
+	if(user != '' && psw!=''){
+		return confirm("Are you sure you wish to create this account?");
+	}
+	else{
+		alert("You have not provided a username/password.");
+		return false;	
+	}
+	
 }
 </script>
     

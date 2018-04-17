@@ -37,35 +37,36 @@
                 </a>
             </div>
             <div class="sidebar-wrapper">
-                <ul class="nav">
-                    <li>
-                        <a href="adminDashboard.php">
-                            <i class="now-ui-icons education_atom"></i>
-                            <p>Dashboard</p>
-                        </a>
-                    </li>
+              <ul class="nav">
+                   
                     <li>
                         <a href="adminUserProfile.php">
                             <i class="now-ui-icons users_circle-08"></i>
-                            <p>User Profile</p>
+                            <p>Change Password</p>
                         </a>
                     </li>
-                    <li class="active">
-                        <a href="adminAccounts.php">
+                    <li>
+                                <a href="adminViewAccounts2.php">
                             <i class="now-ui-icons business_badge"></i>
                             <p>Accounts</p>
                         </a>
                     </li>
-                    <li>
+                    <li class="active">
                         <a href="adminCourseOfferings.php">
                             <i class="now-ui-icons design_bullet-list-67"></i>
                             <p>Course Offerings</p>
                         </a>
                     </li>
-                    <li>
+                    <li >
                         <a href="adminAttendanceSummary.php">
                             <i class="now-ui-icons education_paper"></i>
                             <p>Attendance Summary</p>
+                        </a>
+                    </li>
+                     <li>
+                        <a href="logout.php">
+                            <i class="now-ui-icons arrow"></i>
+                            <p>Logout</p>
                         </a>
                     </li>
                 </ul>
@@ -83,8 +84,8 @@
                                 <span class="navbar-toggler-bar bar3"></span>
                             </button>
                         </div>
-                        <a class="navbar-brand" href="adminAccounts.php">
-                            <font color="#141E30">Accounts - Add Faculty</font>
+                        <a class="navbar-brand">
+                            <font color="#141E30">Add Faculty</font>
                         </a>
                     </div>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
@@ -92,30 +93,7 @@
                         <span class="navbar-toggler-bar navbar-kebab"></span>
                         <span class="navbar-toggler-bar navbar-kebab"></span>
                     </button>
-                    <div class="collapse navbar-collapse justify-content-end" id="navigation">
-                        <form>
-                            <div class="input-group no-border">
-                                <input type="text" value="" class="form-control" placeholder="Search...">
-                                <span class="input-group-addon">
-                                    <i class="now-ui-icons ui-1_zoom-bold" style="color:#141E30"></i>
-                                </span>
-                            </div>
-                        </form>
-                        <ul class="navbar-nav">
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="now-ui-icons ui-1_settings-gear-63" style="color:#141E30"></i>
-                                    <p>
-                                        <span class="d-lg-none d-md-block">Some Actions</span>
-                                    </p>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="dropdown-item" href="http://www.dlsu.edu.ph" style="color:#141E30">Website</a>
-                                    <a class="dropdown-item" href="loginPage.php" style="color:#141E30">Logout</a>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
+             
                 </div>
             </nav>
             <!-- End Navbar -->
@@ -133,13 +111,13 @@
                                         <div class="col-md-6 pr-1">
                                             <div class="form-group">
                                                 <label>First Name</label>
-                                                <input type="text" name="f_firstname" class="form-control" placeholder="First Name" value="" required>
+                                                <input type="text" id="firstname" name="f_firstname" class="form-control" placeholder="First Name" value="" required>
                                             </div>
                                         </div>
                                         <div class="col-md-6 pl-1">
                                             <div class="form-group">
                                                 <label>Last Name</label>
-                                                <input type="text" name="f_lastname" class="form-control" placeholder="Last Name" value="" required>
+                                                <input type="text" id="lastname" name="f_lastname" class="form-control" placeholder="Last Name" value="" required>
                                             </div>
                                         </div>
                                     </div>
@@ -147,7 +125,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label>Address</label>
-                                                <input type="text" name="f_address" class="form-control" placeholder="Home Address" value="" required>
+                                                <input type="text" id="address" name="f_address" class="form-control" placeholder="Home Address" value="" required>
                                             </div>
                                         </div>
                                     </div>
@@ -155,13 +133,13 @@
                                         <div class="col-md-6 pr-1">
                                             <div class="form-group">
                                                 <label>Contact Number</label>
-                                                <input type="text" name="f_contactno" class="form-control" placeholder="Contact" value="" required>
+                                                <input type="text" id="contact" name="f_contactno" class="form-control" placeholder="Contact" value="" required>
                                             </div>
                                         </div>
                                         <div class="col-md-6 pl-1">
                                             <div class="form-group">
                                                 <label>E-mail</label>
-                                                <input type="email" name="f_email" class="form-control" placeholder="E-mail" value="" required>
+                                                <input type="email" id="email" name="f_email" class="form-control" placeholder="E-mail" value="" required>
                                             </div>
                                         </div>
                                     </div>
@@ -169,7 +147,7 @@
                                         <div class="col-md-4 pr-1">
                                             <div class="form-group">
                                                 <label>Department</label>
-                                                <select name="f_dept" class="form-control" required>
+                                                <select name="f_dept" id="dept" class="form-control" required>
                                                     <option value="" disabled selected>Select Department</option>
                                                     <option name="f_dept" value="1">Accountancy</option>
                                                     <option name="f_dept" value="2">Law</option>
@@ -190,7 +168,7 @@
                                         <div class="col-md-4 pr-1">
                                             <div class="form-group">
                                                 <label>Rank</label>
-                                                <select name="f_rank" class="form-control" required>
+                                                <select name="f_rank" id="rank" class="form-control" required>
                                                     <option value="" disabled selected>Select Rank</option>
                                                     <option name="f_rank" value="1">Full Professor</option>
                                                     <option name="f_rank" value="2">Assistant Professor</option>
@@ -202,7 +180,7 @@
                                     </div>
                                     <br>
                                     <button type="button" class="btn btn-default" style="float:left" onclick="cancel();">CANCEL</button>
-                                    <input id="submitme" class="btn btn-warning" type="submit" style="float:right" value="ADD ACCOUNT" onclick="return createAccount();"/>
+                                    <input id="submitme" class="btn btn-warning" type="submit" style="float:right" value="ADD ACCOUNT" onclick="return trial();"/>
                                 </form>
                             </div>
                         </div>
@@ -254,6 +232,26 @@ function cancel() {
     if (confirm("Are you sure you want to discard creating this acccount?")) {
         window.location.href = "addFaculty.php";
     }
+}
+    
+function trial(){
+	
+	firstname = document.getElementById("firstname").value;
+    lastname = document.getElementById("lastname").value;
+    address = document.getElementById("address").value;
+    contact = document.getElementById("contact").value;
+    email = document.getElementById("email").value;
+    dept = document.getElementById("dept").value;
+    rank = document.getElementById("rank").value;
+	
+	if(firstname != '' && lastname!='' && address!='' && contact!='' && email!='' && dept!='' && rank!=''){
+		return confirm("Are you sure you wish to create this account?");
+	}
+	else{
+		alert("You have not provided the needed details. Please try again.");
+		return false;	
+	}
+	
 }
 </script>
 
