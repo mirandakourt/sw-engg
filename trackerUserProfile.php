@@ -29,10 +29,10 @@
     <div class="wrapper ">
         <div class="sidebar" data-color="green">
             <div class="logo">
-                <a href="adminDashboard.php" class="simple-text logo-mini">
+                <a  class="simple-text logo-mini">
                     <img src="../assets/img/logo.png" />
                 </a>
-                <a href="adminDashboard.php" class="simple-text logo-normal">
+                <a  class="simple-text logo-normal">
                     DE LA SALLE UNIVERSITY 
                 </a>
             </div>
